@@ -39,7 +39,7 @@ async function main() {
     platformDependencies: JSON.parse(platformDependencies)
   };
   core.info(JSON.stringify(versionUpload));
-  form.append("versionUpload", JSON.stringify(versionUpload), { contentType: "application/json" });
+  form.append("versionUpload", JSON.stringify(versionUpload));
   for (const file of filesArray) {
     if (file.path) {
       form.append("files", fs.createReadStream(file.path));
