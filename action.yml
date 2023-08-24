@@ -3,7 +3,7 @@ description: 'Upload minecraft plugin to hangar.papermc.io with github actions!'
 
 branding:
   icon: 'upload'
-  color: 'gray'
+  color: 'gray-dark'
 
 inputs:
   api_token:
