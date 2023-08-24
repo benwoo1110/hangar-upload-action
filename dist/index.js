@@ -1,9 +1,8 @@
 "use strict";
 import core from "@actions/core";
 import FormData from "form-data";
-import fetch from "node-fetch";
+import fetch, { Request } from "node-fetch";
 import fs from "fs";
-import assert from "assert";
 const apiToken = core.getInput("api_token", { required: true });
 const author = core.getInput("author", { required: true });
 const slug = core.getInput("slug", { required: true });
@@ -60,12 +59,8 @@ async function main() {
     "Authorization": token,
     ...form.getHeaders()
   };
-  core.info(`Headers: ${JSON.stringify(headers)}`);
-  form.setEncoding("utf8");
-  form.on("data", (chunk) => {
-    assert.equal(typeof chunk, "string");
-    console.log("Got %d characters of string data:", chunk.length);
-  });
+  const req = new Request(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/versions/${version}`, { body: form });
+  console.log(await req.text());
   const resp = await fetch(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/upload`, {
     method: "POST",
     headers,
