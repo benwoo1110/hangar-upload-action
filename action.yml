@@ -30,11 +30,11 @@ inputs:
   plugin_dependencies:
     description: 'Plugin dependencies'
     required: false
-    default: '[]'
+    default: '{}'
   platform_dependencies:
     description: 'Platform dependencies'
     required: false
-    default: '[]'
+    default: '{}'
 
 runs:
   using: 'node16'
