@@ -25,7 +25,7 @@ async function main() {
   const filesData = []
   for (const file of filesArray) {
     if (file.path) {
-      form.append('files', fs.createReadStream(file.path))
+      form.append('files', fs.createReadStream(file.path), { contentType: 'application/java-archive'})
       filesData.push({ platforms: file.platforms })
       continue
     } else if (file.url && file.externalUrl) {
