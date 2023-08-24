@@ -1,7 +1,7 @@
 "use strict";
 import core from "@actions/core";
 import FormData from "form-data";
-import fetch, { Request } from "node-fetch";
+import fetch from "node-fetch";
 import fs from "fs";
 const apiToken = core.getInput("api_token", { required: true });
 const author = core.getInput("author", { required: true });
@@ -40,7 +40,7 @@ async function main() {
     pluginDependencies: JSON.parse(pluginDependencies),
     platformDependencies: JSON.parse(platformDependencies)
   };
-  form.append("versionUpload", JSON.stringify(versionUpload));
+  form.append("versionUpload", JSON.stringify(versionUpload), { contentType: "application/json" });
   const token = await fetch(`https://hangar.papermc.io/api/v1/authenticate?apiKey=${apiToken}`, {
     method: "POST",
     headers: {
@@ -59,8 +59,6 @@ async function main() {
     "Authorization": token,
     ...form.getHeaders()
   };
-  const req = new Request(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/versions/${version}`, { method: "POST", body: form });
-  console.log(await req.text());
   const resp = await fetch(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/upload`, {
     method: "POST",
     headers,
