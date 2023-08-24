@@ -1,8 +1,7 @@
 import core from '@actions/core'
 import FormData from 'form-data'
-import fetch, { Request } from 'node-fetch'
+import fetch from 'node-fetch'
 import fs from 'fs'
-import assert from 'assert'
 import path from 'path'
 
 const apiToken = core.getInput('api_token', { required: true })
