@@ -22,7 +22,7 @@ async function main() {
   const filesData = [];
   for (const file of filesArray) {
     if (file.path) {
-      form.append("files", fs.createReadStream(file.path), { contentType: "application/java-archive" });
+      form.append("files", fs.createReadStream(file.path));
       filesData.push({ platforms: file.platforms });
       continue;
     } else if (file.url && file.externalUrl) {
@@ -40,6 +40,7 @@ async function main() {
     pluginDependencies: JSON.parse(pluginDependencies),
     platformDependencies: JSON.parse(platformDependencies)
   };
+  core.info(JSON.stringify(versionUpload));
   form.append("versionUpload", JSON.stringify(versionUpload), { contentType: "application/json" });
   const token = await fetch(`https://hangar.papermc.io/api/v1/authenticate?apiKey=${apiToken}`, {
     method: "POST",
