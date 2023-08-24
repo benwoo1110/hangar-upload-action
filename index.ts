@@ -70,9 +70,9 @@ async function main() {
 
   core.info(`Headers: ${JSON.stringify(headers)}`)
 
-  const chunks = [];
-  form.on('data', buf => chunks.push(buf));
-  form.on('end', () => console.log( Buffer.concat(chunks).toString() ))
+  for await (const chunk of form) {
+    console.log(chunk);
+  }
 
   const resp = await fetch(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/upload`, {
     method: 'POST',
