@@ -1,4 +1,4 @@
-name: 'DBO Upload'
+name: 'Hangar Upload Action'
 description: 'Upload minecraft plugin to hangar.papermc.io with github actions!'
 
 branding:
