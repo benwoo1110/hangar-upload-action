@@ -62,13 +62,18 @@ async function main() {
 
   core.info('Successfully authenticated!')
 
+  const headers = {
+    'User-Agent': `hangar-upload-action; ${author}/${slug};`,
+    'Authorization': token,
+    'Content-Type': 'multipart/form-data; boundary=' + form.getBoundary(),
+    ...form.getHeaders(),
+  }
+
+  core.info(`Headers: ${JSON.stringify(headers)}`)
+
   const resp = await fetch(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/upload`, {
     method: 'POST',
-    headers: {
-      'User-Agent': `hangar-upload-action; ${author}/${slug};`,
-      'Authorization': token,
-      ...form.getHeaders(),
-    },
+    headers,
     body: form,
   }).then(async res => {
     if (!res.ok) {
