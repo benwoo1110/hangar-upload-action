@@ -54,7 +54,7 @@ async function main() {
     }
   }).then(async res => {
     if (!res.ok) {
-      core.setFailed(`Failed to authenticate: ${res.status} ${res.statusText}`)
+      core.setFailed(`Failed to authenticate: ${res.statusText} ${await res.text()}`)
       process.exit(1)
     }
     return await res.json()
@@ -62,7 +62,7 @@ async function main() {
 
   core.info('Successfully authenticated!')
 
-  const resp = await fetch(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/versions`, {
+  const resp = await fetch(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/upload`, {
     method: 'POST',
     headers: {
       'User-Agent': `hangar-upload-action; ${author}/${slug};`,
@@ -72,7 +72,7 @@ async function main() {
     body: form,
   }).then(async res => {
     if (!res.ok) {
-      core.setFailed(`Failed to upload: ${res.status} ${res.statusText}`)
+      core.setFailed(`Failed to upload: ${res.statusText} ${await res.text()}`)
       process.exit(1)
     }
     return await res.json()
