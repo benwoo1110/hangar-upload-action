@@ -59,7 +59,7 @@ async function main() {
     "Authorization": token,
     ...form.getHeaders()
   };
-  const req = new Request(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/versions/${version}`, { body: form });
+  const req = new Request(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/versions/${version}`, { method: "POST", body: form });
   console.log(await req.text());
   const resp = await fetch(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/upload`, {
     method: "POST",
