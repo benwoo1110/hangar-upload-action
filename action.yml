@@ -1,0 +1,41 @@
+name: 'DBO Upload'
+description: 'Upload minecraft plugin to hanger.papermc.io with github actions!'
+
+branding:
+  icon: 'upload'
+  color: 'gray'
+
+inputs:
+  api_token:
+    description: 'Hanger API Token'
+    required: true
+  author:
+    description: 'Plugin Author'
+    required: true
+  slug:
+    description: 'Plugin Name'
+    required: true
+  version:
+    description: 'Plugin Version'
+    required: true
+  channel:
+    description: 'Channel type of the release'
+    required: true
+  files:
+    description: 'Files to upload'
+    required: true
+  description:
+    description: 'Release description'
+    required: false
+  plugin_dependencies:
+    description: 'Plugin dependencies'
+    required: false
+    default: '[]'
+  platform_dependencies:
+    description: 'Platform dependencies'
+    required: false
+    default: '[]'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

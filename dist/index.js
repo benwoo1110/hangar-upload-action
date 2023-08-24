@@ -1,0 +1,73 @@
+"use strict";
+import core from "@actions/core";
+import FormData from "form-data";
+import fetch from "node-fetch";
+import fs from "fs";
+const apiToken = core.getInput("api_token", { required: true });
+const author = core.getInput("author", { required: true });
+const slug = core.getInput("slug", { required: true });
+const version = core.getInput("version", { required: true });
+const channel = core.getInput("channel", { required: true });
+const files = core.getInput("files", { required: true });
+const description = core.getInput("description");
+const pluginDependencies = core.getInput("plugin_dependencies");
+const platformDependencies = core.getInput("platform_dependencies");
+main().catch((err) => {
+  console.error(err);
+  core.setFailed(err.message);
+});
+async function main() {
+  const form = new FormData();
+  const filesArray = JSON.parse(files);
+  const filesData = [];
+  for (const file of filesArray) {
+    if (file.path) {
+      form.append("files", fs.createReadStream(file.path));
+      filesData.push({ platforms: file.platforms });
+      continue;
+    } else if (file.url && file.externalUrl) {
+      filesData.push({ platforms: file.platforms, url: true, externalUrl: file.externalUrl });
+      continue;
+    }
+    core.setFailed(`Invalid file data: ${JSON.stringify(file)}`);
+    process.exit(1);
+  }
+  const versionUpload = {
+    version,
+    channel,
+    description,
+    files: filesData,
+    pluginDependencies: JSON.parse(pluginDependencies),
+    platformDependencies: JSON.parse(platformDependencies)
+  };
+  form.append("versionUpload", JSON.stringify(versionUpload));
+  const token = await fetch(`https://hanger.papermc.io/api/v1/authenticate?apiKey=${apiToken}`, {
+    method: "POST",
+    headers: {
+      "User-Agent": `hangar-upload-action; ${author}/${slug};`
+    }
+  }).then(async (res) => {
+    if (!res.ok) {
+      core.setFailed(`Failed to authenticate: ${res.status} ${res.statusText}`);
+      process.exit(1);
+    }
+    return await res.json();
+  }).then((data) => data.token);
+  core.info("Successfully authenticated!");
+  const resp = await fetch(`https://hanger.papermc.io/api/v1/projects/${author}/${slug}/versions`, {
+    method: "POST",
+    headers: {
+      "User-Agent": `hangar-upload-action; ${author}/${slug};`,
+      "Authorization": token,
+      ...form.getHeaders()
+    },
+    body: form
+  }).then(async (res) => {
+    if (!res.ok) {
+      core.setFailed(`Failed to upload: ${res.status} ${res.statusText}`);
+      process.exit(1);
+    }
+    return await res.json();
+  });
+  core.info(JSON.stringify(resp));
+}
