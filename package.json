@@ -1,5 +1,5 @@
 {
-  "name": "hanger-upload-action",
+  "name": "hangar-upload-action",
   "version": "1.0.0",
   "description": "Upload minecraft plugin to hangar.papermc.io with github actions!",
   "main": "dist/index.js",

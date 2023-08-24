@@ -41,7 +41,7 @@ async function main() {
     platformDependencies: JSON.parse(platformDependencies)
   };
   form.append("versionUpload", JSON.stringify(versionUpload));
-  const token = await fetch(`https://hanger.papermc.io/api/v1/authenticate?apiKey=${apiToken}`, {
+  const token = await fetch(`https://hangar.papermc.io/api/v1/authenticate?apiKey=${apiToken}`, {
     method: "POST",
     headers: {
       "User-Agent": `hangar-upload-action; ${author}/${slug};`
@@ -54,7 +54,7 @@ async function main() {
     return await res.json();
   }).then((data) => data.token);
   core.info("Successfully authenticated!");
-  const resp = await fetch(`https://hanger.papermc.io/api/v1/projects/${author}/${slug}/versions`, {
+  const resp = await fetch(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/versions`, {
     method: "POST",
     headers: {
       "User-Agent": `hangar-upload-action; ${author}/${slug};`,

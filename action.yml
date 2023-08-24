@@ -1,5 +1,5 @@
 name: 'DBO Upload'
-description: 'Upload minecraft plugin to hanger.papermc.io with github actions!'
+description: 'Upload minecraft plugin to hangar.papermc.io with github actions!'
 
 branding:
   icon: 'upload'
@@ -7,7 +7,7 @@ branding:
 
 inputs:
   api_token:
-    description: 'Hanger API Token'
+    description: 'Hangar API Token'
     required: true
   author:
     description: 'Plugin Author'

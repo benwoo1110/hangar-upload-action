@@ -1,2 +1,2 @@
-# hanger-upload-action
+# hangar-upload-action
 Upload minecraft plugin to hangar.papermc.io with github actions!
