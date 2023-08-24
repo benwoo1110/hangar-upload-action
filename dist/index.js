@@ -3,6 +3,7 @@ import core from "@actions/core";
 import FormData from "form-data";
 import fetch from "node-fetch";
 import fs from "fs";
+import path from "path";
 const apiToken = core.getInput("api_token", { required: true });
 const author = core.getInput("author", { required: true });
 const slug = core.getInput("slug", { required: true });
@@ -39,10 +40,10 @@ async function main() {
     platformDependencies: JSON.parse(platformDependencies)
   };
   core.info(JSON.stringify(versionUpload));
-  form.append("versionUpload", JSON.stringify(versionUpload));
+  form.append("versionUpload", JSON.stringify(versionUpload), { contentType: "application/json" });
   for (const file of filesArray) {
     if (file.path) {
-      form.append("files", fs.createReadStream(file.path));
+      form.append("files", fs.createReadStream(file.path), { contentType: "application/x-binary", filename: path.basename(file.path) });
     }
   }
   const token = await fetch(`https://hangar.papermc.io/api/v1/authenticate?apiKey=${apiToken}`, {
