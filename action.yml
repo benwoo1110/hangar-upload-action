@@ -9,9 +9,6 @@ inputs:
   api_token:
     description: 'Hangar API Token'
     required: true
-  author:
-    description: 'Plugin Author'
-    required: true
   slug:
     description: 'Plugin Name'
     required: true

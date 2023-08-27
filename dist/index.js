@@ -5,7 +5,6 @@ import fetch from "node-fetch";
 import fs from "fs";
 import path from "path";
 const apiToken = core.getInput("api_token", { required: true });
-const author = core.getInput("author", { required: true });
 const slug = core.getInput("slug", { required: true });
 const version = core.getInput("version", { required: true });
 const channel = core.getInput("channel", { required: true });
@@ -45,7 +44,7 @@ async function main() {
   const token = await fetch(`https://hangar.papermc.io/api/v1/authenticate?apiKey=${apiToken}`, {
     method: "POST",
     headers: {
-      "User-Agent": `hangar-upload-action; ${author}/${slug};`
+      "User-Agent": `hangar-upload-action; ${slug};`
     }
   }).then(async (res) => {
     if (!res.ok) {
@@ -55,10 +54,10 @@ async function main() {
     return await res.json();
   }).then((data) => data.token);
   core.info("Successfully authenticated!");
-  const resp = await fetch(`https://hangar.papermc.io/api/v1/projects/${author}/${slug}/upload`, {
+  const resp = await fetch(`https://hangar.papermc.io/api/v1/projects/${slug}/upload`, {
     method: "POST",
     headers: {
-      "User-Agent": `hangar-upload-action; ${author}/${slug};`,
+      "User-Agent": `hangar-upload-action; ${slug};`,
       "Authorization": token,
       ...form.getHeaders()
     },
